@@ -68,6 +68,13 @@ public class Demo {
            - Separate what to do from when to stop
         */
 
+        personsWithMiddleName(people);
+
+        people.parallelStream()
+                .filter(p -> p.middleName.isPresent())
+                .limit(3)
+                .collect(Collectors.toSet());
+
 
 
 
@@ -87,6 +94,9 @@ public class Demo {
            - No toggles
         */
 
+        final Person person = new Person(new FirstName("Donald"), new LastName("Duck"));
+
+        person.changeName(new LastName("Trump"));
 
 
 
@@ -95,6 +105,19 @@ public class Demo {
          */
 
 
+    }
+
+    private static ImmutableSet<Person> personsWithMiddleName(Set<Person> people) {
+        return FluentIterable
+                .from(people)
+                .filter(new Predicate<Person>() {
+                    @Override
+                    public boolean apply(Person input) {
+                        return input.middleName.isPresent();
+                    }
+                })
+                .limit(2)
+                .toSet();
     }
 
 }
